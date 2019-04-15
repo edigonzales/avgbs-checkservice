@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
             .formLogin()
             //.loginPage("/login")
-            .defaultSuccessUrl("/home")
+            .defaultSuccessUrl("/foo") // used only when navigated directly to the login page
             .failureUrl("/login?error=true")
             .permitAll()
         .and()
@@ -42,7 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .logoutSuccessUrl("/login?logout=true")
             .invalidateHttpSession(true)                                             
             .deleteCookies("JSESSIONID")
-            .logoutUrl("/logout");
+            .logoutUrl("/logout")
+        .and()
+            .httpBasic();
 //        .and()
 //            .csrf()
 //            .disable();

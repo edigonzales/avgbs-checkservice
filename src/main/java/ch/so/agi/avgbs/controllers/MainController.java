@@ -19,10 +19,16 @@ public class MainController {
         return ResponseEntity.ok().header("Content-Type", "text/plain; charset=utf-8").body("Hallo Welt - Post.");
     }
     
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/foo", method = RequestMethod.GET)
     public ResponseEntity<?> login() {
         
         return ResponseEntity.ok().header("Content-Type", "text/plain; charset=utf-8").body("Hallo Welt.");
+    }
+    
+    @RequestMapping(value = "/upload", method = RequestMethod.GET)
+    public String upload() {
+        
+        return "upload";
     }
     
     @RequestMapping(value = "/perform_logout")
