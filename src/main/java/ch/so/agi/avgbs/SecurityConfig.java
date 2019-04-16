@@ -35,16 +35,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()
             //.loginPage("/login")
             .defaultSuccessUrl("/foo") // used only when navigated directly to the login page
-            .failureUrl("/login?error=true")
+            //.failureUrl("/login?error=true")
             .permitAll()
         .and()
             .logout()
-            .logoutSuccessUrl("/login?logout=true")
+            .logoutSuccessUrl("/login") // TODO: if we use '?logout=true' there is some mess going on with redirecting
             .invalidateHttpSession(true)                                             
             .deleteCookies("JSESSIONID")
             .logoutUrl("/logout")
         .and()
-            .httpBasic();
+            .httpBasic(); // TODO: why it is possible to logout with basic auth?
 //        .and()
 //            .csrf()
 //            .disable();
