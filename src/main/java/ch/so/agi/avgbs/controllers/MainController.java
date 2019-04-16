@@ -25,7 +25,7 @@ public class MainController {
         return ResponseEntity.ok().header("Content-Type", "text/plain; charset=utf-8").body("Hallo Welt.");
     }
     
-    @RequestMapping(value = "/upload", method = RequestMethod.GET)
+    @RequestMapping(value = "/bar", method = RequestMethod.GET)
     public String upload() {
         
         return "upload";
