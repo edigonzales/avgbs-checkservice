@@ -6,6 +6,10 @@ import java.nio.file.Paths;
 
 import javax.servlet.ServletContext;
 
+import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
+import org.apache.camel.ProducerTemplate;
+import org.apache.camel.builder.ExchangeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +38,9 @@ public class UploadController {
 
     @Autowired
     private ServletContext servletContext;
+    
+    @Autowired
+    CamelContext camelContext;
 
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public String upload() {
@@ -42,7 +51,8 @@ public class UploadController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> uploadFile(
-            @RequestParam(name = "file", required = true) MultipartFile uploadFile) {
+            @RequestParam(name = "file", required = true) MultipartFile uploadFile, 
+            Authentication authentication) {
      
         try {
             // Get the file name.
@@ -65,9 +75,37 @@ public class UploadController {
             // Save the file locally.
             byte[] bytes = uploadFile.getBytes();
             Files.write(uploadFilePath, bytes);
-    
-            return ResponseEntity.badRequest().contentType(MediaType.parseMediaType("text/plain")).body("fubar");
+            
+            
+            if (!(authentication instanceof AnonymousAuthenticationToken)) {
+                String currentUserName = authentication.getName();
+                log.info("****");
+                log.info(currentUserName);
+            }
+            
+            
+            // Send message to route here with authentication information.
+            ProducerTemplate template = camelContext.createProducerTemplate();
+            
+            Exchange exchange = ExchangeBuilder.anExchange(camelContext)
+                    .withBody(uploadFilePath.toFile())
+                    .withHeader(Exchange.AUTHENTICATION, authentication)
+                    .withHeader(Exchange.FILE_NAME, uploadFilePath.toFile().getName())
+                    .build();
 
+            // Asynchronous request
+            //template.asyncSend("direct:avgbsCheckservice", exchange);
+            
+            // Synchronous request
+            Exchange result = template.send("direct:avgbsCheckservice", exchange);
+            
+            if (result.isFailed()) {
+                return ResponseEntity.badRequest().contentType(MediaType.parseMediaType("text/plain")).body(result.getException().getMessage());
+            } else {
+                return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body("alles gut");
+
+            }
+            
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
