@@ -21,10 +21,8 @@ public class AuthorisationProcessor implements Processor {
         
         log.info(authentication.getName());
         log.info(authentication.getAuthorities().toString());
-//        log.info(authentication.getCredentials().toString());
-//        authentication.getAuthorities().stream().forEach(System.out::println);;
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority authority : authorities) {
             log.info(authority.getAuthority());
 

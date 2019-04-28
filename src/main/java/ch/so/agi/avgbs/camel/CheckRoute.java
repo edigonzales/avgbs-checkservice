@@ -25,17 +25,12 @@ public class CheckRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-//        from("file://"+pathToUploadFolder+"/?noop=true&delay=5000&initialDelay=3000&readLock=changed&antInclude=**/*.zip&recursive=true&idempotentRepository=#fileConsumerRepo&idempotentKey=copy-process-${file:name}-${file:size}-${file:modified}")
-//        .to("file://"+pathToProcessFolder);
-        
-        
-        
-        
-        
+
         from("direct:avgbsCheckservice")
         .process(new AuthorisationProcessor())
-        .log(LoggingLevel.INFO, "AuthorisationProcessor successfully passed.")
+        .log(LoggingLevel.INFO, "Authorisation successfully passed.")
         .process(new ZipContentMatchesZipNameProcessor())
+        .log(LoggingLevel.INFO, "ZipContentMatchesZipName successfully passed.")
         .to("file:///Users/stefan/tmp/");
         
         
