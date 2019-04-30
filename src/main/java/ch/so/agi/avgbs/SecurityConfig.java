@@ -45,36 +45,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http         
-         .headers()
-          .frameOptions().sameOrigin()
-          .and()
-            .authorizeRequests()
-             .antMatchers("/resources/**", "/webjars/**","/assets/**").permitAll()
+        http
+            .headers().frameOptions().sameOrigin()
+            .and().authorizeRequests()
+                .antMatchers("/resources/**", "/webjars/**", "/assets/**").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
-                .and()
-            .formLogin()
+            .and().formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/home")
-                .failureUrl("/login?error")
-                .permitAll()
-                .and()
-            .logout()
-             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-             .logoutSuccessUrl("/login?logout")
-             .deleteCookies("my-remember-me-cookie")
-                .permitAll()
-                .and()
-             .rememberMe()
-              //.key("my-secure-key")
-              .rememberMeCookieName("my-remember-me-cookie")
-              .tokenRepository(persistentTokenRepository())
-              .tokenValiditySeconds(24 * 60 * 60)
-              .and()
-            .exceptionHandling()
-              ;
+                .failureUrl("/login?error").permitAll()
+            .and().logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login?logout")
+                .deleteCookies("my-remember-me-cookie").permitAll()
+            .and().rememberMe()
+                // .key("my-secure-key")
+                .rememberMeCookieName("my-remember-me-cookie").tokenRepository(persistentTokenRepository())
+                .tokenValiditySeconds(24 * 60 * 60).and().exceptionHandling();
     }
     
     PersistentTokenRepository persistentTokenRepository() {
