@@ -61,8 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login?logout")
                 .deleteCookies("my-remember-me-cookie").permitAll()
             .and().rememberMe()
-                // .key("my-secure-key")
-                .rememberMeCookieName("my-remember-me-cookie").tokenRepository(persistentTokenRepository())
+                // .key("my-secure-key") // TODO: I think this is not needed with persistent token repoistory (?) 
+                .rememberMeCookieName("avgbs-remember-me-cookie").tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(24 * 60 * 60).and().exceptionHandling();
     }
     
