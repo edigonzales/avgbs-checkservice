@@ -24,18 +24,20 @@ import ch.so.agi.avgbs.services.IdentNDService;
 public class AuthorisationProcessor implements Processor {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    /*
     @Autowired
     private IdentNDService identNDService;
+    */
     
     @Autowired
     private IdentNDRepository identNDRepository;
         
     @Override
     public void process(Exchange exchange) throws Exception {
-        System.out.println("Authorisation");
         
         Authentication authentication = (Authentication) exchange.getIn().getHeader(Exchange.AUTHENTICATION);
         
+        /*
         log.info(authentication.getName());
         log.info(authentication.getAuthorities().toString());
 
@@ -44,16 +46,17 @@ public class AuthorisationProcessor implements Processor {
             log.info("=====");
             log.info(authority.getAuthority());
         }
+        */
         
         
-        
-        log.info("-----------------------------------2");
+        log.info("-----------------------------------");
         IdentND identND = identNDRepository.findByIdentnd("SO0200002401").orElse(null);
         
+        /*
         log.info(identND.getMunicipality());
         log.info(identND.getRole().getName());
         log.info("***********************************");
-
+        */
         
         //throw new Exception("AuthorisationException");
     }

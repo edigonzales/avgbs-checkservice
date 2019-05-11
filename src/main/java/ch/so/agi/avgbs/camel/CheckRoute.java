@@ -25,13 +25,13 @@ public class CheckRoute extends RouteBuilder {
     private String pathToProcessFolder;
     
     @Autowired
-    AuthorisationProcessor authProcessor;
+    AuthorisationProcessor authorisationProcessor;
     
     @Override
     public void configure() throws Exception {
 
         from("direct:avgbsCheckservice")
-        .process(authProcessor)
+        .process(authorisationProcessor)
         .log(LoggingLevel.INFO, "Authorisation successfully passed.")
         .process(new ZipContentMatchesZipNameProcessor())
         .log(LoggingLevel.INFO, "ZipContentMatchesZipName successfully passed.")

@@ -84,8 +84,7 @@ public class UploadController {
                 log.info(currentUserName);
             }
             
-            
-            // Send message to route here with authentication information.
+            // Send message to route with authentication information.
             ProducerTemplate template = camelContext.createProducerTemplate();
             
             Exchange exchange = ExchangeBuilder.anExchange(camelContext)
