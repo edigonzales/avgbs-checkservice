@@ -3,28 +3,19 @@
 
 <head>
     <title>Log in</title>
-    
     <style>
-        .center {
-			margin: auto;
-			width: 50%;
-			border: 3px solid green;
-			padding: 10px;
-        }
         .border-info {
             border-color:rgba(0, 0, 0, 0.125)!important;
             border-width:1px;
         }
-        
         .card {
             box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
         }
-        .ale        
     </style>    
 </head>
 
 <body>
-    <div layout:fragment="content">
+    <div layout:fragment="content" style="padding-top:100px;">
          <div class="row justify-content-sm-center">
             <div class="col-sm-6 col-md-4">
 	            <div class="card border-info">
@@ -65,66 +56,9 @@
                 </div>
             </div>
         </div>
-        
-
-<!-- 
-		<div class="row">
-	        <div class="col-3" style="background-color:wheat">foo
-	        </div>
-	        <div class="col-5" style="background-color:green">
-	            <div class="panel panel-primary">
-	                <div class="panel-heading">Login</div>
-	                <div class="panel-body">
-	
-	                    <form action="home" th:action="@{/login}" method="post">
-	                        <div class="form-group has-feedback">
-	                            <input type="email" class="form-control" name="username" placeholder="Email" />
-	                            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-	                        </div>
-	                        <div class="form-group has-feedback">
-	                            <input type="password" class="form-control" name="password" placeholder="Password" /> <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-	                        </div>
-	                        <div class="form-group">
-	                            <label>
-	                                <input type="checkbox" name="remember-me" /> Remember Me
-	                            </label>
-	                        </div>
-	                        <div class="row">
-	                            <div class="form-group col-xs-offset-8 col-xs-4">
-	                                <button type="submit" class="btn btn-primary btn-block btn-flat" th:text="#{label.login}">LogIn</button>
-	                            </div>
-	                        </div>
-	                        <div class="row">
-	                            <div class="col-xs-12">
-	                                <div th:if="${param.error}" class="alert alert-danger alert-dismissable">
-	                                    <p>
-	                                        <i class="icon fa fa-ban"></i> 
-	                                        <span th:text="#{error.login_failed}">Invalid Email and Password.</span>
-	                                    </p>
-	                                </div>
-	                                <div th:if="${param.logout}" class="alert alert-info alert-dismissable">
-	                                    <p>
-	                                        <i class="icon fa fa-info"></i> 
-	                                        <span th:text="#{info.logout_success}">You have been logged out.</span>
-	                                    </p>
-	                                </div>
-	                                <div th:if="${msg!=null}" class="alert alert-warning alert-dismissable">
-	                                    <p>
-	                                        <i class="icon fa fa-warning"></i> 
-	                                        <span th:text="${msg}"></span>
-	                                    </p>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </form>
-	
-	                </div>
-	            </div>
-	        </div>
-	    </div>
- -->    
-	    
+ 
     </div>
+    
 </body>
 
 </html>

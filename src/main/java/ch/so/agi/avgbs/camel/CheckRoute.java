@@ -7,6 +7,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.dataformat.zipfile.ZipSplitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +23,15 @@ public class CheckRoute extends RouteBuilder {
 
     @Value("${app.pathToProcessFolder}")
     private String pathToProcessFolder;
-
+    
+    @Autowired
+    AuthorisationProcessor authProcessor;
+    
     @Override
     public void configure() throws Exception {
 
         from("direct:avgbsCheckservice")
-        .process(new AuthorisationProcessor())
+        .process(authProcessor)
         .log(LoggingLevel.INFO, "Authorisation successfully passed.")
         .process(new ZipContentMatchesZipNameProcessor())
         .log(LoggingLevel.INFO, "ZipContentMatchesZipName successfully passed.")
