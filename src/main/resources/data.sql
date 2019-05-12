@@ -62,4 +62,5 @@ insert into user_role(user_id, role_id) values
 --);
 
 INSERT INTO identnd(id, role_id, identnd, municipality, fosnr, enabled) values
-(1, 4, 'SO0200002401', 'Egerkingen', 2401, true);
+(1, 4, 'SO0200002401', 'Egerkingen', 2401, true),
+(2, 4, 'SO0200002402', 'Härkingen', 2402, false);

@@ -1,11 +1,6 @@
 package ch.so.agi.avgbs.camel.processors;
 
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.persistence.EntityNotFoundException;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -19,8 +14,6 @@ import org.springframework.stereotype.Component;
 import ch.so.agi.avgbs.models.IdentND;
 import ch.so.agi.avgbs.models.Role;
 import ch.so.agi.avgbs.repositories.IdentNDRepository;
-import ch.so.agi.avgbs.services.CustomUserDetailsService;
-import ch.so.agi.avgbs.services.IdentNDService;
 
 @Component
 public class AuthorisationProcessor implements Processor {
@@ -31,12 +24,11 @@ public class AuthorisationProcessor implements Processor {
         
     @Override
     public void process(Exchange exchange) throws Exception {
-        
-        // Get IdentND (first 12 characters of file name).
+        // Get identnd (first 12 characters of file name).
         String fileName = (String) exchange.getIn().getHeaders().get("CamelFileName");
         String messageIdentND = fileName.substring(0,12);
         
-        // Get authorized role for this messaged IdentND.
+        // Get authorized role for this message's identnd (Nummerierungsbereich).
         IdentND identND = identNDRepository.findByIdentnd(messageIdentND).orElse(null);
         
         if (identND == null) {

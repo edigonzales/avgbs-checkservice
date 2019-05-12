@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import ch.so.agi.avgbs.camel.processors.AuthorisationProcessor;
+import ch.so.agi.avgbs.camel.processors.EnabledIdentNDProcessor;
 import ch.so.agi.avgbs.camel.processors.ZipContentMatchesZipNameProcessor;
 
 @Component
@@ -23,17 +24,25 @@ public class CheckRoute extends RouteBuilder {
 
     @Value("${app.pathToProcessFolder}")
     private String pathToProcessFolder;
-    
+
+    @Autowired
+    EnabledIdentNDProcessor enabledIdentNDProcessor;
+
     @Autowired
     AuthorisationProcessor authorisationProcessor;
+    
+    @Autowired
+    ZipContentMatchesZipNameProcessor zipContentMatchesZipNameProcessor;
     
     @Override
     public void configure() throws Exception {
 
         from("direct:avgbsCheckservice")
+        .process(enabledIdentNDProcessor)
+        .log(LoggingLevel.INFO, "EnabledIdentND successfully passed.")
         .process(authorisationProcessor)
         .log(LoggingLevel.INFO, "Authorisation successfully passed.")
-        .process(new ZipContentMatchesZipNameProcessor())
+        .process(zipContentMatchesZipNameProcessor)
         .log(LoggingLevel.INFO, "ZipContentMatchesZipName successfully passed.")
         .to("file:///Users/stefan/tmp/");
         
