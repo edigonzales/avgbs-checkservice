@@ -77,12 +77,13 @@ public class UploadController {
             byte[] bytes = uploadFile.getBytes();
             Files.write(uploadFilePath, bytes);
             
-            
+            /*
             if (!(authentication instanceof AnonymousAuthenticationToken)) {
                 String currentUserName = authentication.getName();
                 log.info("****");
                 log.info(currentUserName);
             }
+            */
             
             // Send message to route with authentication information.
             ProducerTemplate template = camelContext.createProducerTemplate();

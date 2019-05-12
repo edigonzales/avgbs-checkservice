@@ -2,6 +2,7 @@ package ch.so.agi.avgbs.camel.processors;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import ch.so.agi.avgbs.models.IdentND;
+import ch.so.agi.avgbs.models.Role;
 import ch.so.agi.avgbs.repositories.IdentNDRepository;
 import ch.so.agi.avgbs.services.CustomUserDetailsService;
 import ch.so.agi.avgbs.services.IdentNDService;
@@ -23,11 +25,6 @@ import ch.so.agi.avgbs.services.IdentNDService;
 @Component
 public class AuthorisationProcessor implements Processor {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-
-    /*
-    @Autowired
-    private IdentNDService identNDService;
-    */
     
     @Autowired
     private IdentNDRepository identNDRepository;
@@ -35,29 +32,32 @@ public class AuthorisationProcessor implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
         
+        // Get IdentND (first 12 characters of file name).
+        String fileName = (String) exchange.getIn().getHeaders().get("CamelFileName");
+        String messageIdentND = fileName.substring(0,12);
+        
+        // Get authorized role for this messaged IdentND.
+        IdentND identND = identNDRepository.findByIdentnd(messageIdentND).orElse(null);
+        
+        if (identND == null) {
+            throw new IllegalArgumentException("IdentND not found: " + messageIdentND);
+        }
+        
+        Role roleIdentND = identND.getRole();
+     
+        // Is user authorized?
         Authentication authentication = (Authentication) exchange.getIn().getHeader(Exchange.AUTHENTICATION);
         
-        /*
-        log.info(authentication.getName());
-        log.info(authentication.getAuthorities().toString());
-
+        boolean authorized = false;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority authority : authorities) {
-            log.info("=====");
-            log.info(authority.getAuthority());
+            if (authority.getAuthority().equals(roleIdentND.getName())) {
+                return;
+            }
         }
-        */
         
-        
-        log.info("-----------------------------------");
-        IdentND identND = identNDRepository.findByIdentnd("SO0200002401").orElse(null);
-        
-        /*
-        log.info(identND.getMunicipality());
-        log.info(identND.getRole().getName());
-        log.info("***********************************");
-        */
-        
-        //throw new Exception("AuthorisationException");
+        // User is not authorized for sending messages with this IdentND.
+        throw new AuthorisationProcessorException("AuthorisationException: " + authentication.getName() 
+        + " is not allowed to send files for " + identND.getIdentnd() + ".");        
     }
 }
