@@ -68,11 +68,11 @@ public class UploadController {
                 return new ResponseEntity<String>(headers, HttpStatus.FOUND);
             }
     
-            // Build the local file path.
+            // Build the file path.
             Path tmpDirectory = Files.createTempDirectory(Paths.get(pathToUploadFolder), FOLDER_PREFIX);
             Path uploadFilePath = Paths.get(tmpDirectory.toString(), fileName);
     
-            // Save the file locally.
+            // Save the file.
             byte[] bytes = uploadFile.getBytes();
             Files.write(uploadFilePath, bytes);
             
@@ -90,7 +90,7 @@ public class UploadController {
             Exchange exchange = ExchangeBuilder.anExchange(camelContext)
                     .withBody(uploadFilePath.toFile())
                     .withHeader(Exchange.AUTHENTICATION, authentication)
-                    .withHeader(Exchange.FILE_NAME, uploadFilePath.toFile().getName())
+                    .withHeader(Exchange.FILE_NAME, uploadFilePath.toFile().getName()) // TODO: use file name only?
                     .build();
 
             // Asynchronous request
