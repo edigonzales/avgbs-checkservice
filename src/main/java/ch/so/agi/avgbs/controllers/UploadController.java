@@ -45,7 +45,6 @@ public class UploadController {
 
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public String upload() {
-        
         return "upload";
     }
     

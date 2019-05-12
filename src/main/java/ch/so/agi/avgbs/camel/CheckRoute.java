@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import ch.so.agi.avgbs.camel.processors.AuthorisationProcessor;
 import ch.so.agi.avgbs.camel.processors.EnabledIdentNDProcessor;
+import ch.so.agi.avgbs.camel.processors.IlivalidatorProcessor;
 import ch.so.agi.avgbs.camel.processors.ZipContentMatchesZipNameProcessor;
 
 @Component
@@ -34,6 +35,9 @@ public class CheckRoute extends RouteBuilder {
     @Autowired
     ZipContentMatchesZipNameProcessor zipContentMatchesZipNameProcessor;
     
+    @Autowired
+    IlivalidatorProcessor ilivalidatorProcessor;
+
     @Override
     public void configure() throws Exception {
 
@@ -44,6 +48,8 @@ public class CheckRoute extends RouteBuilder {
         .log(LoggingLevel.INFO, "Authorisation successfully passed.")
         .process(zipContentMatchesZipNameProcessor)
         .log(LoggingLevel.INFO, "ZipContentMatchesZipName successfully passed.")
+        .process(ilivalidatorProcessor)
+        .log(LoggingLevel.INFO, "Ilivalidator successfully passed.")
         .to("file:///Users/stefan/tmp/");
         
         

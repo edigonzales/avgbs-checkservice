@@ -12,3 +12,11 @@ curl -XPOST "http://localhost:8888/avgbs-checkservice/upload"
 
 curl -XPOST -u user:password "http://localhost:8888/avgbs-checkservice/"
 ```
+
+
+## macOS zip
+
+```
+zip -d SO0200002401_1622_20190416.zip "__MACOSX*"
+```
+

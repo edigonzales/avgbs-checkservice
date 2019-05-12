@@ -20,7 +20,7 @@ public class EnabledIdentNDProcessor implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
         String fileName = (String) exchange.getIn().getHeaders().get("CamelFileName");
-        String messageIdentND = fileName.substring(0,12); // Nummerierungsbereich / IdentND
+        String messageIdentND = fileName.substring(0,12); 
         
         IdentND identND = identNDRepository.findByIdentnd(messageIdentND).orElse(null);
         
@@ -34,5 +34,4 @@ public class EnabledIdentNDProcessor implements Processor {
             throw new EnabledIdentNDProcessorException(messageIdentND + " is not enabled.");
         }
     }
-
 }
