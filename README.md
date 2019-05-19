@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/edigonzales/avgbs-checkservice.svg?branch=master)](https://travis-ci.org/edigonzales/avgbs-checkservice)
 # avgbs-checkservice
 avgbs-checkservice
 
