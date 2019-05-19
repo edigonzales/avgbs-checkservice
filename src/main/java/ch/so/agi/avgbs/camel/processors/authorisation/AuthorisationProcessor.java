@@ -1,4 +1,4 @@
-package ch.so.agi.avgbs.camel.processors;
+package ch.so.agi.avgbs.camel.processors.authorisation;
 
 import java.util.Collection;
 

@@ -1,20 +1,19 @@
 package ch.so.agi.avgbs.camel;
 
-import java.nio.ByteBuffer;
 
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.dataformat.zipfile.ZipSplitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import ch.so.agi.avgbs.camel.processors.AuthorisationProcessor;
-import ch.so.agi.avgbs.camel.processors.EnabledIdentNDProcessor;
-import ch.so.agi.avgbs.camel.processors.IlivalidatorProcessor;
-import ch.so.agi.avgbs.camel.processors.ZipContentMatchesZipNameProcessor;
+import ch.so.agi.avgbs.camel.processors.authorisation.AuthorisationProcessor;
+import ch.so.agi.avgbs.camel.processors.idendnd.EnabledIdentNDProcessor;
+import ch.so.agi.avgbs.camel.processors.ilivalidator.IlivalidatorProcessor;
+import ch.so.agi.avgbs.camel.processors.zipcontent.ZipContentMatchesZipNameProcessor;
+import ch.so.agi.avgbs.camel.processors.zipname.ZipNameMatchesDataProcessor;
 
 @Component
 public class CheckRoute extends RouteBuilder {
@@ -38,6 +37,9 @@ public class CheckRoute extends RouteBuilder {
     @Autowired
     IlivalidatorProcessor ilivalidatorProcessor;
 
+    @Autowired
+    ZipNameMatchesDataProcessor zipNameMatchesDataProcessor;
+
     @Override
     public void configure() throws Exception {
 
@@ -48,22 +50,10 @@ public class CheckRoute extends RouteBuilder {
         .log(LoggingLevel.INFO, "Authorisation successfully passed.")
         .process(zipContentMatchesZipNameProcessor)
         .log(LoggingLevel.INFO, "ZipContentMatchesZipName successfully passed.")
+        .process(zipNameMatchesDataProcessor)
+        .log(LoggingLevel.INFO, "ZipNameMatchesData successfully passed.")        
         .process(ilivalidatorProcessor)
         .log(LoggingLevel.INFO, "Ilivalidator successfully passed.")
         .to("file:///Users/stefan/tmp/");
-        
-        
-        //from("file://"+pathToProcessFolder+"/?noop=true&delay=5000&initialDelay=5000&readLock=changed&antInclude=**/*.zip&recursive=true&idempotentRepository=#fileConsumerRepo&idempotentKey=unzip-${file:name}-${file:size}-${file:modified}")
-//        from("file://"+pathToProcessFolder+"/?noop=true&delay=5000&initialDelay=5000&readLock=changed&antInclude=**/*.zip&recursive=false")
-//        .process(new ZipContentMatchesZipNameProcessor());
-        //.process(processor);
-//        .split(new ZipSplitter())
-//        .streaming().convertBodyTo(ByteBuffer.class) 
-//            .choice()
-//                .when(body().isNotNull())
-//                    .toD("file://${in.header.CamelFileParent}?flatten=false") 
-//            .end()
-//        .end();        
-
     }
 }

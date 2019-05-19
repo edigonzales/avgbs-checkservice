@@ -1,4 +1,4 @@
-package ch.so.agi.avgbs.camel.processors;
+package ch.so.agi.avgbs.camel.processors.ilivalidator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,21 +29,10 @@ public class IlivalidatorProcessor implements Processor {
         log.info(fileNameNoExt);
 
         File dataFile = exchange.getIn().getBody(File.class);
-
         File destDir = new File(dataFile.getParentFile().getAbsolutePath());
-        byte[] buffer = new byte[1024];
-        ZipInputStream zis = new ZipInputStream(new FileInputStream(dataFile.getAbsolutePath()));
-        ZipEntry zipEntry = zis.getNextEntry();
-        while (zipEntry != null) {
-            File newFile = newFile(destDir, zipEntry);
-            FileOutputStream fos = new FileOutputStream(newFile);
-            int len;
-            while ((len = zis.read(buffer)) > 0) {
-                fos.write(buffer, 0, len);
-            }
-            fos.close();
-            zipEntry = zis.getNextEntry();
-        }
+        
+        // We assume the file we need for this validation are present.
+        // This is assumption is validated before!
         
         String logFileName = Paths.get(destDir.getAbsolutePath(), fileNameNoExt + ".log").toFile().getAbsolutePath();
         

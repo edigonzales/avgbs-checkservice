@@ -4,6 +4,7 @@ plugins {
 }
 
 apply plugin: 'io.spring.dependency-management'
+apply from: "$rootDir/gradle/versioning.gradle"
 
 group = 'ch.so.agi'
 
@@ -34,3 +35,15 @@ dependencies {
     runtimeOnly 'com.h2database:h2:1.4.199'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
+task deleteFilesJarDir(type: Delete) {
+    delete fileTree("${buildDir}/dependency/")//.listFiles()
+    delete file("${buildDir}/dependency/")
+}
+
+task unzipJar(type: Copy) {
+    from zipTree(file("${buildDir}/libs/avgbs-checkservice-"+version+".jar"))
+    into file("${buildDir}/dependency/")
+}
+unzipJar.dependsOn(deleteFilesJarDir)
+bootJar.finalizedBy(unzipJar)

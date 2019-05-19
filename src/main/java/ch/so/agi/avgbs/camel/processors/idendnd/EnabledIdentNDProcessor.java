@@ -1,4 +1,4 @@
-package ch.so.agi.avgbs.camel.processors;
+package ch.so.agi.avgbs.camel.processors.idendnd;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
