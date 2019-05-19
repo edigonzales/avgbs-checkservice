@@ -20,3 +20,6 @@ curl -XPOST -u user:password "http://localhost:8888/avgbs-checkservice/"
 zip -d SO0200002401_1622_20190416.zip "__MACOSX*"
 ```
 
+## INTERLIS-Prüfungen
+* Ein weiteres Modell für sehr spezifischen Prüfungen (die nicht in das SOFunctionsExt passen).
+* Was machen mit DB-Anbindung?
