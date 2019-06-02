@@ -20,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -54,7 +53,7 @@ public class UploadController {
             @RequestParam(name = "file", required = true) MultipartFile uploadFile, 
             Authentication authentication) {
      
-        try {            
+        try {
             // Get the file name.
             String fileName = uploadFile.getOriginalFilename();
             

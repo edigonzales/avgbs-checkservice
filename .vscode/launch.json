@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-AvgbsApplication<avgbs-checkservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "ch.so.agi.avgbs.AvgbsApplication",
+            "projectName": "avgbs-checkservice",
+            "args": "",
+            "vmArgs": [
+                "-Dfoo=bar"
+            ],
+            "env": 
+                {
+                    "aname": "avalue",
+                    "dbUrl": "jdbc:h2:/Users/stefan/sources/avgbs-checkservice/avgbs_checkservice;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE"
+                }
+        }
+    ]
+}
