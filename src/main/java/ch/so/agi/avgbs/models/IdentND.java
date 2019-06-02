@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @Table(name = "identnd")
 public class IdentND {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false, unique = true)
@@ -29,7 +29,7 @@ public class IdentND {
     @NotEmpty
     private int fosnr;
     
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     @NotEmpty
     private Boolean enabled;
   
